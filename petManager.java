@@ -1,8 +1,9 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class petManager {
+public class Main {
     public static void main(String[] args) {
+
         ArrayList<petClass> petArray = new ArrayList<>();
         Scanner Scan = new Scanner(System.in);
         boolean running = true;
@@ -21,9 +22,10 @@ public class petManager {
 
             switch (Scan.nextInt()) {
                 case 1:
-
+                    petClass.addPet();
                     break;
                 case 2:
+                    petClass.displayPet();
                     break;
                 case 3:
                     break;
