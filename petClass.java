@@ -41,4 +41,31 @@ public class petClass {
             System.out.println(i + 1 + ": " + petArray.get(i));
         }
     }
+
+    public static void SearchPet() {
+        if (petClass.petArray.isEmpty()) {
+            System.out.println("No pet to search for :(");
+        }
+
+        else {
+            System.out.println("Enter pet name to search: ");
+            String searchName = scanner.nextLine().toLowerCase();
+
+            System.out.println("\n=== Search Results ===");
+            boolean found = false;
+            for (int i = 0; i < petArray.size(); i++) {
+                String petName = petArray.get(i).getName().toLowerCase();
+
+                if (petName.contains(searchName)) {
+                    System.out.println((i + 1) + ": " + petArray.get(i));
+                    found = true;
+                }
+            }
+            if (!found) {
+                System.out.println("No pet found with the name: " +searchName);
+            }
+        }
+    }
+
+    
 }

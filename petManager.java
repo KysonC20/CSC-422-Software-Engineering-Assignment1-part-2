@@ -28,10 +28,12 @@ public class Main {
                     petClass.displayPet();
                     break;
                 case 3:
+
                     break;
                 case 4:
                     break;
                 case 5:
+                    petClass.SearchPet();
                     break;
                 case 6:
                     System.out.println("Exiting the pet manager");
