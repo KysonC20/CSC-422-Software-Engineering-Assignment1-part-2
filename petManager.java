@@ -28,9 +28,10 @@ public class Main {
                     petClass.displayPet();
                     break;
                 case 3:
-
+                    petClass.updatePet();
                     break;
                 case 4:
+                    petClass.deletePet();
                     break;
                 case 5:
                     petClass.SearchPet();
