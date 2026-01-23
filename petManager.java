@@ -1,13 +1,23 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         ArrayList<petClass> petArray = new ArrayList<>();
         Scanner Scan = new Scanner(System.in);
         boolean running = true;
 
+        System.out.println("Do you have an existing file (y/n): ");
+        String haveFile = Scan.nextLine().trim().toLowerCase();
+        if(haveFile.equals("y")) {
+            System.out.println("Please type in the exact file name: ");
+            String inputFile = Scan.nextLine();
+            petClass.readPetsFromFile(inputFile);
+        }else{
+            System.out.println("No File inputed");
+        }
 
         while(running) {
             System.out.println("Please choose an option listed by number\n");
@@ -38,6 +48,19 @@ public class Main {
                     break;
                 case 6:
                     System.out.println("Exiting the pet manager");
+                    Scan.nextLine();
+                    System.out.println("Would you like to save your file? (y/n): ");
+                    String saveFile = Scan.nextLine().trim().toLowerCase();
+
+                    if ( saveFile.equals("y")) {
+                        try {
+                            petClass.savePetsToFile("pets0File.txt");
+                            System.out.println("Saved file: " + petArray);
+                        } catch (IOException e) {
+                            System.out.println("Save file Failed: " + e);
+                        }
+                    }
+
                     System.out.println("Thank you for using the program");
                     running = false;
                     break;
