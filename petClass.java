@@ -1,48 +1,93 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.nio.file.*;
+import java.io.*;
 
 public class petClass {
-    private String name;
-    private String age;
+    private final String name;
+    private final int age;
     static Scanner scanner = new Scanner(System.in);
-    private static ArrayList<petClass> petArray = new ArrayList<>();
+    private static final ArrayList<petClass> petArray = new ArrayList<>();
     private static final int maxNameLength = 10;
-    private static final int maxAgeLength = 4;
+    private static final int maxAge = 20;
+    private static final int minAge = 0;
+    private static final Integer noValue = null;
 
-    public petClass(String name, String age) {
+
+    public petClass(String name, int age) {
         this.name = name;
         this.age = age;
     }
 
     public String getName() {return name;}
-    public String getAge() {return age;}
+    public int getAge() {return age;}
 
     @Override
     public String toString() {
         return "Pet(name: " + name + ", Age: " + age + ")";
     }
 
+    public static void readPetsFromFile(String fileName) throws IOException {
+        File file =  new File(fileName);
+        if(!file.exists()) {
+            System.out.println("No files found: \n(" + fileName + ") Starting an empty pet list");
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) continue;
+
+                String[] parts = line.split("\\s+");
+                if (parts.length < 2) continue;
+
+                String petName = parts[0];
+                try {
+                    int petAge = Integer.parseInt(parts[1]);
+                    new petClass(petName, petAge);
+                } catch (NumberFormatException e) {
+                    System.out.println("Error has occurred: " + e);
+                }
+            }
+        }
+    }
+
+    public static void savePetsToFile(String fileName) throws IOException {
+        try (PrintWriter write = new PrintWriter(new FileWriter(fileName))) {
+            for( petClass pet: petArray) {
+            write.println(pet.getName() + " " + pet.getAge());
+            }
+        }
+    }
+
+
     public static void addPet(){
-        System.out.println("Enter the Pets name: ");
-        String name = scanner.nextLine().toLowerCase();
-        if (name.isEmpty() || name.length() > maxNameLength) {
-            System.out.println("Invalid input length, Please try again");
+        if (petArray.size() > 4){
+            System.out.println("Maximum capacity reached, limit of 5 pets");
+        }else {
             System.out.println("Enter the Pets name: ");
-            name = scanner.nextLine().toLowerCase();
-        }
+            String name = scanner.nextLine().toLowerCase();
+            if (name.isEmpty() || name.length() > 10 || name.matches("^\\d+$")) {
+                System.out.println("Invalid input length, Please try again");
+                System.out.println("Enter the Pets name: ");
+                name = scanner.nextLine().toLowerCase();
+            }
 
-        System.out.println("Enter the pets age: ");
-        String age = scanner.nextLine();
-        if (age.isEmpty() || age.length() > maxNameLength) {
-            System.out.println("Invalid input length, Please try again");
             System.out.println("Enter the pets age: ");
-            age = scanner.nextLine();
+            int age = scanner.nextInt();
+
+            if (age < minAge || age > maxAge || noValue == null ||noValue != age) {
+                System.out.println("Invalid input, Please try again");
+                System.out.println("Enter the pets age: ");
+                age = scanner.nextInt();
+            }
+
+            petClass PetClass = new petClass(name, age);
+            petArray.add(PetClass);
+
+            System.out.println("Pet was added: " + PetClass);
         }
-
-        petClass PetClass = new petClass(name, age);
-        petArray.add(PetClass);
-
-        System.out.println("Pet was added: " + PetClass);
     }
 
     public static void displayPet(){
@@ -115,11 +160,11 @@ public class petClass {
                 }
 
                 System.out.print("Enter the new pets age: ");
-                String newPetAge = scanner.nextLine();
-                if (newPetAge.isEmpty() || newPetAge.length() > maxNameLength) {
+                int newPetAge = scanner.nextInt();
+                if (newPetAge < minAge || newPetAge > maxNameLength || newPetAge == noValue) {
                     System.out.println("Invalid input length, Please try again");
                     System.out.print("Enter the new pets age: ");
-                    newPetAge = scanner.nextLine();
+                    newPetAge = scanner.nextInt();
                 }
 
                 petClass updatedPet = new petClass(newPetName, newPetAge);
@@ -156,3 +201,4 @@ public class petClass {
         }
     }
 }
+
